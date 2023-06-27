@@ -13,7 +13,7 @@ $mail->Host = "smtp.gmail.com";
 $mail->Port = 465;
 $mail->IsHTML(true);
 $mail->Username = "ntgolda@gmail.com";
-$mail->Password = "SWeetyuWeFrasv4";
+$mail->Password = "xxxxx";
 $mail->SetFrom("ntgolda@gmail.com");
 $mail->Subject = "Test";
 $mail->Body = "hello";
