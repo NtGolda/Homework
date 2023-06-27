@@ -1,48 +1,51 @@
 <?php
 class Validator
 {
-    function validate($card_number): string
+    public function validate($card_number): string
     {
-        $summa = 0;
+        $sum = 0;
         $len = strlen($card_number);
-        $issuer = $this -> issuer($card_number);
-        for ($i=0; $i < $len; $i++){
-            $digit = $card_number % 10;
-            $card_number = intdiv($card_number, 10);
-
-            if($i%2 != 0){
+        $issuer = $this->issuer($card_number);
+        
+        for ($i = 0; $i < $len; $i++) {
+            $digit = $card_number[$len - 1 - $i];
+            
+            if ($i % 2 !== 0) {
                 $digit *= 2;
-
-                if($digit>9)
+                
+                if ($digit > 9) {
                     $digit -= 9;
+                }
             }
-            $summa += $digit;
+            
+            $sum += $digit;
         }
-        if($summa % 10 == 0){
+        
+        if ($sum % 10 === 0) {
             return "Valid " . $issuer;
-        }
-        else{
-            return "Invalid ";
+        } else {
+            return "Invalid";
         }
     }
-    function issuer($card_number): string
+    
+    public function issuer($card_number): string
     {
-        $r_visa = '/^(4[0-9]|14)+[0-9]{11,17}$/';
-        $r_mc = '/^(5[1-5]|62|67)+[0-9]{11,17}$/';
-        if(preg_match($r_mc, $card_number)){
+        $visa_regex = '/^(4[0-9]{12}(?:[0-9]{3})?)$/';
+        $mastercard_regex = '/^(5[1-5][0-9]{14})$/';
+        
+        if (preg_match($mastercard_regex, $card_number)) {
             return "MasterCard";
-        }
-        else if(preg_match($r_visa, $card_number)){
+        } elseif (preg_match($visa_regex, $card_number)) {
             return "Visa";
-        }
-        else{
+        } else {
             return "Not defined issuer";
         }
     }
 }
 
-if(isset($_POST['card_number'])){
+if (isset($_POST['card_number'])) {
     $validator = new Validator();
-    $card_number = (int) $_POST['card_number'];
-    echo $validator -> validate($card_number);
+    $card_number = $_POST['card_number'];
+    echo $validator->validate($card_number);
 }
+?>
