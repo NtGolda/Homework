@@ -1,54 +1,25 @@
 <?php
-// composer require phpmailer/phpmailer
 
-require '/phpmailer/PHPMailer.php';
-require '/phpmailer/SMTP.php';
-require '/phpmailer/Exception.php';
+require("phpmailer/PHPMailer.php");
+require("phpmailer/Exception.php");
+require("phpmailer/SMTP.php");
 
-use phpmailer\PHPMailer;
-use phpmailer\SMTP;
-use phpmailer\Exception;
-
-function sendEmail($email, $name, $text) {
-    $mail = new PHPMailer(true);
-
-    $mail->isSMTP();
-    $mail->Host = 'smtp.example.com'; // Укажите smtp-сервер, например, smtp.gmail.com
-    $mail->SMTPAuth = true;
-    $mail->Username = 'your_email@example.com'; // Укажите ваш email для отправки
-    $mail->Password = 'your_password'; // Укажите пароль от вашего email
-    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-    $mail->Port = 587;
-
-    $mail->setFrom('your_email@example.com', 'Your Name'); // Укажите ваш email и имя отправителя
-    $mail->addAddress($email, $name); // Укажите email и имя получателя
-
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        echo 'Введите корректный email';
-        exit;
-    }
-
-    if (empty($email) || empty($name) || empty($text)) {
-        echo 'Пожалуйста, заполните все поля';
-        exit;
-    }
-
-    $mail->isHTML(true);
-    $mail->Subject = 'Заголовок письма';
-    $mail->Body = $text;
-
-    $mail->addAttachment('path/to/file.pdf');
-
-    try {
-        $mail->send();
-        echo 'Email отправлен';
-    } catch (Exception $e) {
-        echo 'Ошибка при отправке email: ' . $mail->ErrorInfo;
-    }
+$mail = new PHPMailer\PHPMailer\PHPMailer();
+$mail->IsSMTP();
+$mail->SMTPDebug = 1;
+$mail->SMTPAuth = true;
+$mail->SMTPSecure = 'ssl';
+$mail->Host = "smtp.gmail.com";
+$mail->Port = 465;
+$mail->IsHTML(true);
+$mail->Username = "ntgolda@gmail.com";
+$mail->Password = "SWeetyuWeFrasv4";
+$mail->SetFrom("ntgolda@gmail.com");
+$mail->Subject = "Test";
+$mail->Body = "hello";
+$mail->AddAddress("nt08golda@gmail.com");
+if(!$mail->Send()) {
+	echo "Mailer Error: " . $mail->ErrorInfo;
+} else {
+    echo "Message has been sent";
 }
-
-$email = 'recipient@example.com';
-$name = 'Recipient Name';
-$text = 'Текст письма';
-
-sendEmail($email, $name, $text);
