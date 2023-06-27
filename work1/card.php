@@ -1,7 +1,7 @@
 <?php
 class Validator
 {
-    public function validate($card_number): string
+    public function validate($card_number)
     {
         $sum = 0;
         $len = strlen($card_number);
@@ -28,7 +28,7 @@ class Validator
         }
     }
     
-    public function issuer($card_number): string
+    public function issuer($card_number)
     {
         $visa_regex = '/^(4[0-9]{12}(?:[0-9]{3})?)$/';
         $mastercard_regex = '/^(5[1-5][0-9]{14})$/';
